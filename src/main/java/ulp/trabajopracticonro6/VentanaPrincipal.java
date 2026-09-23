@@ -9,7 +9,9 @@ package ulp.trabajopracticonro6;
  * @author diego
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
-    
+
+    private GestorProductos gestor = new GestorProductos();
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName());
 
     /**
@@ -44,16 +46,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 672, Short.MAX_VALUE)
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
+            .addGap(0, 625, Short.MAX_VALUE)
         );
 
         menu_administración.setText("Administración");
 
         item_gestionarproductos.setText("Gestionar Productos");
+        item_gestionarproductos.addActionListener(this::item_gestionarproductosActionPerformed);
         menu_administración.add(item_gestionarproductos);
 
         navbar_principal.add(menu_administración);
@@ -61,6 +64,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         menu_consultas.setText("Consultas");
 
         item_listardenombres.setText("Listado Por Nombre");
+        item_listardenombres.addActionListener(this::item_listardenombresActionPerformed);
         menu_consultas.add(item_listardenombres);
 
         item_listardeprecios.setText("Listado Por Precio");
@@ -68,6 +72,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         menu_consultas.add(item_listardeprecios);
 
         item_listarderubros.setText("Listado Por Rubro");
+        item_listarderubros.addActionListener(this::item_listarderubrosActionPerformed);
         menu_consultas.add(item_listarderubros);
 
         navbar_principal.add(menu_consultas);
@@ -78,11 +83,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jDesktopPane1)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jDesktopPane1)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -90,7 +99,32 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void item_listardepreciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_listardepreciosActionPerformed
         // TODO add your handling code here:
+        ListadoPorPrecio listado = new ListadoPorPrecio(gestor);
+        jDesktopPane1.add(listado);
+        listado.setVisible(true);
     }//GEN-LAST:event_item_listardepreciosActionPerformed
+
+    private void item_gestionarproductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_gestionarproductosActionPerformed
+        // TODO add your handling code here:
+        GestionProductos gestion = new GestionProductos(gestor);
+
+        jDesktopPane1.add(gestion);
+        gestion.setVisible(true);
+    }//GEN-LAST:event_item_gestionarproductosActionPerformed
+
+    private void item_listardenombresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_listardenombresActionPerformed
+        // TODO add your handling code here:
+        ListadoPorNombre listado = new ListadoPorNombre(gestor);
+        jDesktopPane1.add(listado);
+        listado.setVisible(true);
+    }//GEN-LAST:event_item_listardenombresActionPerformed
+
+    private void item_listarderubrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_item_listarderubrosActionPerformed
+        // TODO add your handling code here:
+        ListadoPorRubro listado = new ListadoPorRubro(gestor);
+        jDesktopPane1.add(listado);
+        listado.setVisible(true);
+    }//GEN-LAST:event_item_listarderubrosActionPerformed
 
     /**
      * @param args the command line arguments
