@@ -10,11 +10,20 @@ package ulp.trabajopracticonro6;
  */
 public class ListadoPorPrecio extends javax.swing.JInternalFrame {
 
+    private GestorProductos gestor;
+
     /**
      * Creates new form ListadoPorPrecio
      */
-    public ListadoPorPrecio() {
+    public ListadoPorPrecio(GestorProductos gestor) {
         initComponents();
+
+        this.gestor = gestor;
+
+        javax.swing.table.DefaultTableModel modelo
+                = (javax.swing.table.DefaultTableModel) tabla_listadoporprecio.getModel();
+
+        modelo.setRowCount(0);
     }
 
     /**
@@ -64,6 +73,37 @@ public class ListadoPorPrecio extends javax.swing.JInternalFrame {
         text2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         text2.setText("y");
 
+        field_ingresarentre1.setPreferredSize(new java.awt.Dimension(100, 25));
+        field_ingresarentre1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                field_ingresarentre1FocusLost(evt);
+            }
+        });
+        field_ingresarentre1.addActionListener(this::field_ingresarentre1ActionPerformed);
+        field_ingresarentre1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                field_ingresarentre1KeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                field_ingresarentre1KeyReleased(evt);
+            }
+        });
+
+        field_ingresarentre2.setPreferredSize(new java.awt.Dimension(100, 25));
+        field_ingresarentre2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                field_ingresarentre2FocusLost(evt);
+            }
+        });
+        field_ingresarentre2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                field_ingresarentre2KeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                field_ingresarentre2KeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -101,11 +141,251 @@ public class ListadoPorPrecio extends javax.swing.JInternalFrame {
                     .addComponent(field_ingresarentre2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void field_ingresarentre1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_ingresarentre1KeyReleased
+        String textoDesde = field_ingresarentre1.getText();
+        String textoHasta = field_ingresarentre2.getText();
+
+        javax.swing.table.DefaultTableModel modelo
+                = (javax.swing.table.DefaultTableModel) tabla_listadoporprecio.getModel();
+
+        modelo.setRowCount(0);
+
+        double precioDesde = 0;
+        double precioHasta = Double.MAX_VALUE;
+
+        try {
+            if (!textoDesde.isEmpty()) {
+                precioDesde = Double.parseDouble(textoDesde);
+            }
+
+            if (!textoHasta.isEmpty()) {
+                precioHasta = Double.parseDouble(textoHasta);
+            }
+
+            for (Producto producto : gestor.getProductos()) {
+
+                if (producto.getPrecio() >= precioDesde
+                        && producto.getPrecio() <= precioHasta) {
+
+                    modelo.addRow(new Object[]{
+                        producto.getCodigo(),
+                        producto.getDescripcion(),
+                        producto.getPrecio(),
+                        producto.getRubro(),
+                        producto.getStock()
+                    });
+                }
+            }
+
+        } catch (NumberFormatException e) {
+}    }//GEN-LAST:event_field_ingresarentre1KeyReleased
+
+    private void field_ingresarentre2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_ingresarentre2KeyReleased
+        String textoDesde = field_ingresarentre1.getText();
+        String textoHasta = field_ingresarentre2.getText();
+
+        javax.swing.table.DefaultTableModel modelo
+                = (javax.swing.table.DefaultTableModel) tabla_listadoporprecio.getModel();
+
+        modelo.setRowCount(0);
+
+        double precioDesde = 0;
+        double precioHasta = Double.MAX_VALUE;
+
+        try {
+            if (!textoDesde.isEmpty()) {
+                precioDesde = Double.parseDouble(textoDesde);
+            }
+
+            if (!textoHasta.isEmpty()) {
+                precioHasta = Double.parseDouble(textoHasta);
+            }
+
+            for (Producto producto : gestor.getProductos()) {
+
+                if (producto.getPrecio() >= precioDesde
+                        && producto.getPrecio() <= precioHasta) {
+
+                    modelo.addRow(new Object[]{
+                        producto.getCodigo(),
+                        producto.getDescripcion(),
+                        producto.getPrecio(),
+                        producto.getRubro(),
+                        producto.getStock()
+                    });
+                }
+            }
+
+        } catch (NumberFormatException e) {
+}    }//GEN-LAST:event_field_ingresarentre2KeyReleased
+
+    private void field_ingresarentre1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_field_ingresarentre1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_field_ingresarentre1ActionPerformed
+
+    private void field_ingresarentre1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_ingresarentre1FocusLost
+        // TODO add your handling code here:
+        String texto1 = field_ingresarentre1.getText();
+        String texto2 = field_ingresarentre2.getText();
+
+        javax.swing.table.DefaultTableModel modelo
+                = (javax.swing.table.DefaultTableModel) tabla_listadoporprecio.getModel();
+
+        modelo.setRowCount(0);
+
+        if (texto1.isEmpty() || texto2.isEmpty()) {
+            return;
+        }
+
+        try {
+            double precioDesde = Double.parseDouble(texto1);
+            double precioHasta = Double.parseDouble(texto2);
+
+            for (Producto producto : gestor.getProductos()) {
+
+                if (producto.getPrecio() >= precioDesde
+                        && producto.getPrecio() <= precioHasta) {
+
+                    modelo.addRow(new Object[]{
+                        producto.getCodigo(),
+                        producto.getDescripcion(),
+                        producto.getPrecio(),
+                        producto.getRubro(),
+                        producto.getStock()
+                    });
+                }
+            }
+
+        } catch (NumberFormatException e) {
+            // No hacemos nada si el valor no es numérico
+        }
+    }//GEN-LAST:event_field_ingresarentre1FocusLost
+
+    private void field_ingresarentre2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_field_ingresarentre2FocusLost
+        // TODO add your handling code here:
+        String texto1 = field_ingresarentre1.getText();
+        String texto2 = field_ingresarentre2.getText();
+
+        javax.swing.table.DefaultTableModel modelo
+                = (javax.swing.table.DefaultTableModel) tabla_listadoporprecio.getModel();
+
+        modelo.setRowCount(0);
+
+        if (texto1.isEmpty() || texto2.isEmpty()) {
+            return;
+        }
+
+        try {
+            double precioDesde = Double.parseDouble(texto1);
+            double precioHasta = Double.parseDouble(texto2);
+
+            for (Producto producto : gestor.getProductos()) {
+
+                if (producto.getPrecio() >= precioDesde
+                        && producto.getPrecio() <= precioHasta) {
+
+                    modelo.addRow(new Object[]{
+                        producto.getCodigo(),
+                        producto.getDescripcion(),
+                        producto.getPrecio(),
+                        producto.getRubro(),
+                        producto.getStock()
+                    });
+                }
+            }
+
+        } catch (NumberFormatException e) {
+            // No hacemos nada si el valor no es numérico
+        }
+    }//GEN-LAST:event_field_ingresarentre2FocusLost
+
+    private void field_ingresarentre1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_ingresarentre1KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+
+            String texto1 = field_ingresarentre1.getText();
+            String texto2 = field_ingresarentre2.getText();
+
+            javax.swing.table.DefaultTableModel modelo
+                    = (javax.swing.table.DefaultTableModel) tabla_listadoporprecio.getModel();
+
+            modelo.setRowCount(0);
+
+            if (texto1.isEmpty() || texto2.isEmpty()) {
+                return;
+            }
+
+            try {
+                double precioDesde = Double.parseDouble(texto1);
+                double precioHasta = Double.parseDouble(texto2);
+
+                for (Producto producto : gestor.getProductos()) {
+
+                    if (producto.getPrecio() >= precioDesde
+                            && producto.getPrecio() <= precioHasta) {
+
+                        modelo.addRow(new Object[]{
+                            producto.getCodigo(),
+                            producto.getDescripcion(),
+                            producto.getPrecio(),
+                            producto.getRubro(),
+                            producto.getStock()
+                        });
+                    }
+                }
+
+            } catch (NumberFormatException e) {
+                // No hacemos nada si el valor no es numérico
+            }
+        }
+    }//GEN-LAST:event_field_ingresarentre1KeyPressed
+
+    private void field_ingresarentre2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_ingresarentre2KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+
+            String texto1 = field_ingresarentre1.getText();
+            String texto2 = field_ingresarentre2.getText();
+
+            javax.swing.table.DefaultTableModel modelo
+                    = (javax.swing.table.DefaultTableModel) tabla_listadoporprecio.getModel();
+
+            modelo.setRowCount(0);
+
+            if (texto1.isEmpty() || texto2.isEmpty()) {
+                return;
+            }
+
+            try {
+                double precioDesde = Double.parseDouble(texto1);
+                double precioHasta = Double.parseDouble(texto2);
+
+                for (Producto producto : gestor.getProductos()) {
+
+                    if (producto.getPrecio() >= precioDesde
+                            && producto.getPrecio() <= precioHasta) {
+
+                        modelo.addRow(new Object[]{
+                            producto.getCodigo(),
+                            producto.getDescripcion(),
+                            producto.getPrecio(),
+                            producto.getRubro(),
+                            producto.getStock()
+                        });
+                    }
+                }
+
+            } catch (NumberFormatException e) {
+                // No hacemos nada si el valor no es numérico
+            }
+        }
+    }//GEN-LAST:event_field_ingresarentre2KeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

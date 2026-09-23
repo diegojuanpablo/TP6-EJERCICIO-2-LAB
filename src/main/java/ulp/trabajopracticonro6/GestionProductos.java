@@ -4,17 +4,49 @@
  */
 package ulp.trabajopracticonro6;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author diego
  */
 public class GestionProductos extends javax.swing.JInternalFrame {
 
+    private GestorProductos gestor;
+    private int codigoSeleccionado;
+
     /**
      * Creates new form GestionProductos
      */
-    public GestionProductos() {
+    public GestionProductos(GestorProductos gestor) {
         initComponents();
+
+        this.gestor = gestor;
+
+        celdaspinner_stock.setModel(
+                new javax.swing.SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1)
+        );
+
+        celdaspinner_stock.setModel(
+                new javax.swing.SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1)
+        );
+
+        tabla_busqueda.setModel(new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+                    "Codigo", "Descripción", "Precio", "Categoria", "Stock"
+                }
+        ) {
+            @Override
+            public boolean isCellEditable(int fila, int columna) {
+                return false;
+            }
+        });
+
+        boton_guardar.setEnabled(false);
+        boton_actualizar.setEnabled(false);
+        boton_eleminar.setEnabled(false);
+        boton_buscar.setEnabled(false);
     }
 
     /**
@@ -68,6 +100,11 @@ public class GestionProductos extends javax.swing.JInternalFrame {
                 "Codigo", "Descripción", "Precio", "Categoria", "Stock"
             }
         ));
+        tabla_busqueda.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabla_busquedaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabla_busqueda);
 
         panel_busqueda.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -82,11 +119,41 @@ public class GestionProductos extends javax.swing.JInternalFrame {
 
         texto6.setText("Stock:");
 
+        celda_descripcion.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                celda_descripcionFocusLost(evt);
+            }
+        });
         celda_descripcion.addActionListener(this::celda_descripcionActionPerformed);
+        celda_descripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                celda_descripcionKeyTyped(evt);
+            }
+        });
 
+        celda_precio.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                celda_precioFocusLost(evt);
+            }
+        });
         celda_precio.addActionListener(this::celda_precioActionPerformed);
+        celda_precio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                celda_precioKeyTyped(evt);
+            }
+        });
 
+        celda_codigo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                celda_codigoFocusLost(evt);
+            }
+        });
         celda_codigo.addActionListener(this::celda_codigoActionPerformed);
+        celda_codigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                celda_codigoKeyTyped(evt);
+            }
+        });
 
         celdabox_rubro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas", "Comestible", "Limpieza", "Perfumería" }));
 
@@ -99,7 +166,7 @@ public class GestionProductos extends javax.swing.JInternalFrame {
                 .addGroup(panel_busquedaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(panel_busquedaLayout.createSequentialGroup()
                         .addComponent(texto2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
                         .addComponent(celda_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panel_busquedaLayout.createSequentialGroup()
                         .addComponent(texto3)
@@ -151,10 +218,13 @@ public class GestionProductos extends javax.swing.JInternalFrame {
         );
 
         combobox_filtrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas", "Comestible", "Limpieza", "Perfumería" }));
+        combobox_filtrar.addActionListener(this::combobox_filtrarActionPerformed);
 
         boton_cerrar.setText("Cerrar");
+        boton_cerrar.addActionListener(this::boton_cerrarActionPerformed);
 
         boton_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/buscar.png"))); // NOI18N
+        boton_buscar.addActionListener(this::boton_buscarActionPerformed);
 
         boton_nuevo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         boton_nuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/nuevo.png"))); // NOI18N
@@ -162,6 +232,7 @@ public class GestionProductos extends javax.swing.JInternalFrame {
         boton_nuevo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         boton_nuevo.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         boton_nuevo.setOpaque(true);
+        boton_nuevo.addActionListener(this::boton_nuevoActionPerformed);
 
         boton_guardar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         boton_guardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/guardar.png"))); // NOI18N
@@ -169,6 +240,7 @@ public class GestionProductos extends javax.swing.JInternalFrame {
         boton_guardar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         boton_guardar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         boton_guardar.setOpaque(true);
+        boton_guardar.addActionListener(this::boton_guardarActionPerformed);
 
         boton_actualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         boton_actualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/actualizar.png"))); // NOI18N
@@ -176,6 +248,7 @@ public class GestionProductos extends javax.swing.JInternalFrame {
         boton_actualizar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         boton_actualizar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         boton_actualizar.setOpaque(true);
+        boton_actualizar.addActionListener(this::boton_actualizarActionPerformed);
 
         boton_eleminar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         boton_eleminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/borrar.png"))); // NOI18N
@@ -183,6 +256,7 @@ public class GestionProductos extends javax.swing.JInternalFrame {
         boton_eleminar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         boton_eleminar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         boton_eleminar.setOpaque(true);
+        boton_eleminar.addActionListener(this::boton_eleminarActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -286,7 +360,402 @@ public class GestionProductos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_celda_codigoActionPerformed
 
+    private void boton_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_nuevoActionPerformed
+        // TODO add your handling code here:
+        celda_codigo.setText("");
+        celda_descripcion.setText("");
+        celda_precio.setText("");
+        celdabox_rubro.setSelectedIndex(0);
+        celdaspinner_stock.setValue(0);
 
+        boton_guardar.setEnabled(true);
+        boton_actualizar.setEnabled(false);
+        boton_eleminar.setEnabled(false);
+
+        celda_codigo.requestFocus();
+    }//GEN-LAST:event_boton_nuevoActionPerformed
+
+    private void boton_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_guardarActionPerformed
+        // TODO add your handling code here:
+        if (celda_codigo.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar el código.");
+            celda_codigo.requestFocus();
+            return;
+        }
+
+        if (celda_descripcion.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar la descripción.");
+            celda_descripcion.requestFocus();
+            return;
+        }
+
+        if (celda_precio.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar el precio.");
+            celda_precio.requestFocus();
+            return;
+        }
+
+        try {
+
+            int codigo = Integer.parseInt(celda_codigo.getText());
+            double precio = Double.parseDouble(celda_precio.getText());
+            String descripcion = celda_descripcion.getText().trim();
+            String rubro = celdabox_rubro.getSelectedItem().toString();
+            int stock = (Integer) celdaspinner_stock.getValue();
+
+            Producto producto = new Producto(
+                    codigo,
+                    descripcion,
+                    precio,
+                    rubro,
+                    stock
+            );
+
+            if (gestor.agregarProducto(producto)) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Producto guardado."
+                );
+
+                actualizarTabla();
+
+                boton_guardar.setEnabled(false);
+
+                celda_codigo.setText("");
+                celda_descripcion.setText("");
+                celda_precio.setText("");
+                celdabox_rubro.setSelectedIndex(0);
+                celdaspinner_stock.setValue(0);
+
+            } else {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Ya existe ese código."
+                );
+
+                celda_codigo.requestFocus();
+            }
+
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El código y el precio deben ser números."
+            );
+
+            celda_codigo.requestFocus();
+        }
+    }//GEN-LAST:event_boton_guardarActionPerformed
+
+    private void tabla_busquedaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla_busquedaMouseClicked
+        // TODO add your handling code here:
+        int fila = tabla_busqueda.getSelectedRow();
+
+        if (fila >= 0) {
+
+            codigoSeleccionado = Integer.parseInt(
+                    tabla_busqueda.getValueAt(fila, 0).toString()
+            );
+
+            celda_codigo.setText(tabla_busqueda.getValueAt(fila, 0).toString());
+            celda_descripcion.setText(tabla_busqueda.getValueAt(fila, 1).toString());
+            celda_precio.setText(tabla_busqueda.getValueAt(fila, 2).toString());
+            celdabox_rubro.setSelectedItem(tabla_busqueda.getValueAt(fila, 3).toString());
+            celdaspinner_stock.setValue(Integer.parseInt(
+                    tabla_busqueda.getValueAt(fila, 4).toString()
+            ));
+
+            boton_actualizar.setEnabled(true);
+            boton_eleminar.setEnabled(true);
+            boton_buscar.setEnabled(true);
+        }
+
+
+    }//GEN-LAST:event_tabla_busquedaMouseClicked
+
+    private void boton_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_actualizarActionPerformed
+        // TODO add your handling code here:
+        if (celda_codigo.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar código.");
+            celda_codigo.requestFocus();
+            return;
+        }
+
+        if (celda_descripcion.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar descripción.");
+            celda_descripcion.requestFocus();
+            return;
+        }
+
+        if (celda_precio.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar precio.");
+            celda_precio.requestFocus();
+            return;
+        }
+
+        try {
+            int codigo = Integer.parseInt(celda_codigo.getText());
+            double precio = Double.parseDouble(celda_precio.getText());
+            String descripcion = celda_descripcion.getText().trim();
+            String rubro = celdabox_rubro.getSelectedItem().toString();
+            int stock = (Integer) celdaspinner_stock.getValue();
+
+            Producto productoViejo = null;
+
+            for (Producto producto : gestor.getProductos()) {
+                if (producto.getCodigo() == codigoSeleccionado) {
+                    productoViejo = producto;
+                    break;
+                }
+            }
+
+            if (productoViejo != null) {
+                gestor.eliminarProducto(productoViejo);
+            }
+
+            Producto productoNuevo = new Producto(
+                    codigo,
+                    descripcion,
+                    precio,
+                    rubro,
+                    stock
+            );
+
+            if (gestor.agregarProducto(productoNuevo)) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Actualizado."
+                );
+
+                actualizarTabla();
+
+                boton_actualizar.setEnabled(false);
+                boton_eleminar.setEnabled(false);
+                boton_buscar.setEnabled(false);
+
+                celda_codigo.setText("");
+                celda_descripcion.setText("");
+                celda_precio.setText("");
+                celdabox_rubro.setSelectedIndex(0);
+                celdaspinner_stock.setValue(0);
+
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Ya existe ese código."
+                );
+            }
+
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El código y el precio deben ser números."
+            );
+
+            celda_codigo.requestFocus();
+    }//GEN-LAST:event_boton_actualizarActionPerformed
+    }
+    private void boton_eleminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_eleminarActionPerformed
+        // TODO add your handling code here:
+        int respuesta = JOptionPane.showConfirmDialog(
+                this,
+                "¿Eliminar el producto?",
+                "Confirmar",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+
+            Producto productoEliminar = null;
+
+            for (Producto producto : gestor.getProductos()) {
+                if (producto.getCodigo() == codigoSeleccionado) {
+                    productoEliminar = producto;
+                    break;
+                }
+            }
+
+            if (productoEliminar != null) {
+
+                gestor.eliminarProducto(productoEliminar);
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Producto eliminado."
+                );
+
+                actualizarTabla();
+
+                celda_codigo.setText("");
+                celda_descripcion.setText("");
+                celda_precio.setText("");
+                celdabox_rubro.setSelectedIndex(0);
+                celdaspinner_stock.setValue(0);
+
+                boton_actualizar.setEnabled(false);
+                boton_eleminar.setEnabled(false);
+                boton_buscar.setEnabled(false);
+            }
+    }//GEN-LAST:event_boton_eleminarActionPerformed
+    }
+    private void boton_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_buscarActionPerformed
+        // TODO add your handling code here:
+        String textoCodigo = celda_codigo.getText().trim();
+
+        if (textoCodigo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar el código.");
+            celda_codigo.requestFocus();
+            return;
+        }
+
+        try {
+
+            int codigo = Integer.parseInt(textoCodigo);
+
+            boolean encontrado = false;
+
+            for (Producto producto : gestor.getProductos()) {
+
+                if (producto.getCodigo() == codigo) {
+
+                    celda_codigo.setText(String.valueOf(producto.getCodigo()));
+                    celda_descripcion.setText(producto.getDescripcion());
+                    celda_precio.setText(String.valueOf(producto.getPrecio()));
+                    celdabox_rubro.setSelectedItem(producto.getRubro());
+                    celdaspinner_stock.setValue(producto.getStock());
+
+                    codigoSeleccionado = producto.getCodigo();
+
+                    encontrado = true;
+
+                    boton_actualizar.setEnabled(true);
+                    boton_eleminar.setEnabled(true);
+
+                    break;
+                }
+            }
+
+            if (!encontrado) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "No existe ese código."
+                );
+                celda_codigo.requestFocus();
+            }
+
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El código debe ser un número."
+            );
+
+            celda_codigo.requestFocus();
+    }//GEN-LAST:event_boton_buscarActionPerformed
+    }
+    private void celda_codigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_celda_codigoKeyTyped
+        // TODO add your handling code here:
+        char tecla = evt.getKeyChar();
+
+        if (!Character.isDigit(tecla)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_celda_codigoKeyTyped
+
+    private void celda_precioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_celda_precioKeyTyped
+        // TODO add your handling code here:
+        char tecla = evt.getKeyChar();
+
+        if (!Character.isDigit(tecla) && tecla != '.') {
+            evt.consume();
+        }
+    }//GEN-LAST:event_celda_precioKeyTyped
+
+    private void celda_descripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_celda_descripcionKeyTyped
+        // TODO add your handling code here:
+        char tecla = evt.getKeyChar();
+
+        if (!Character.isLetterOrDigit(tecla) && tecla != ' ') {
+            evt.consume();
+        }
+    }//GEN-LAST:event_celda_descripcionKeyTyped
+
+    private void combobox_filtrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combobox_filtrarActionPerformed
+        // TODO add your handg code here
+        String rubroSeleccionado
+                = combobox_filtrar.getSelectedItem().toString();
+
+        javax.swing.table.DefaultTableModel modelo
+                = (javax.swing.table.DefaultTableModel) tabla_busqueda.getModel();
+
+        modelo.setRowCount(0);
+
+        for (Producto producto : gestor.getProductos()) {
+
+            if (rubroSeleccionado.equals("Todas")
+                    || producto.getRubro().equals(rubroSeleccionado)) {
+
+                modelo.addRow(new Object[]{
+                    producto.getCodigo(),
+                    producto.getDescripcion(),
+                    producto.getPrecio(),
+                    producto.getRubro(),
+                    producto.getStock()
+                });
+            }
+        }
+    }//GEN-LAST:event_combobox_filtrarActionPerformed
+
+    private void celda_codigoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_celda_codigoFocusLost
+        // TODO add your handling code here:
+        if (celda_codigo.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingresar código.");
+            celda_codigo.requestFocus();
+        }
+    }//GEN-LAST:event_celda_codigoFocusLost
+
+    private void celda_descripcionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_celda_descripcionFocusLost
+        // TODO add your handling code here:
+        if (celda_descripcion.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingresar descripción.");
+            celda_descripcion.requestFocus();
+        }
+    }//GEN-LAST:event_celda_descripcionFocusLost
+
+    private void celda_precioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_celda_precioFocusLost
+        // TODO add your handling code here:
+        if (celda_precio.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingresar el precio.");
+            celda_precio.requestFocus();
+        }
+    }//GEN-LAST:event_celda_precioFocusLost
+
+    private void boton_cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_cerrarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_boton_cerrarActionPerformed
+
+    private void actualizarTabla() {
+
+        javax.swing.table.DefaultTableModel modelo
+                = (javax.swing.table.DefaultTableModel) tabla_busqueda.getModel();
+
+        modelo.setRowCount(0);
+
+        for (Producto producto : gestor.getProductos()) {
+
+            modelo.addRow(new Object[]{
+                producto.getCodigo(),
+                producto.getDescripcion(),
+                producto.getPrecio(),
+                producto.getRubro(),
+                producto.getStock()
+            });
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton boton_actualizar;
     private javax.swing.JButton boton_buscar;
@@ -312,4 +781,5 @@ public class GestionProductos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel texto6;
     private javax.swing.JLabel titulo_gestion;
     // End of variables declaration//GEN-END:variables
+
 }

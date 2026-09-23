@@ -170,6 +170,9 @@
                   </Table>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tabla_busquedaMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -190,7 +193,7 @@
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="texto2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="58" max="32767" attributes="0"/>
                               <Component id="celda_codigo" min="-2" pref="193" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
@@ -289,17 +292,23 @@
             </Component>
             <Component class="javax.swing.JTextField" name="celda_descripcion">
               <Events>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="celda_descripcionFocusLost"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="celda_descripcionActionPerformed"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="celda_descripcionKeyTyped"/>
               </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="celda_precio">
               <Events>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="celda_precioFocusLost"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="celda_precioActionPerformed"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="celda_precioKeyTyped"/>
               </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="celda_codigo">
               <Events>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="celda_codigoFocusLost"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="celda_codigoActionPerformed"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="celda_codigoKeyTyped"/>
               </Events>
             </Component>
             <Component class="javax.swing.JComboBox" name="celdabox_rubro">
@@ -332,6 +341,9 @@
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="combobox_filtrarActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
@@ -340,6 +352,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Cerrar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boton_cerrarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="boton_buscar">
           <Properties>
@@ -347,6 +362,9 @@
               <Image iconType="3" name="/buscar.png"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boton_buscarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="boton_nuevo">
           <Properties>
@@ -365,6 +383,9 @@
             <Property name="horizontalTextPosition" type="int" value="4"/>
             <Property name="opaque" type="boolean" value="true"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boton_nuevoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="boton_guardar">
           <Properties>
@@ -383,6 +404,9 @@
             <Property name="horizontalTextPosition" type="int" value="4"/>
             <Property name="opaque" type="boolean" value="true"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boton_guardarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="boton_actualizar">
           <Properties>
@@ -401,6 +425,9 @@
             <Property name="horizontalTextPosition" type="int" value="4"/>
             <Property name="opaque" type="boolean" value="true"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boton_actualizarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="boton_eleminar">
           <Properties>
@@ -419,6 +446,9 @@
             <Property name="horizontalTextPosition" type="int" value="4"/>
             <Property name="opaque" type="boolean" value="true"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boton_eleminarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

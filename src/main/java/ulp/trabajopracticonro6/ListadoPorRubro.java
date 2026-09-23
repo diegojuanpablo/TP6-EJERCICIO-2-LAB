@@ -10,11 +10,19 @@ package ulp.trabajopracticonro6;
  */
 public class ListadoPorRubro extends javax.swing.JInternalFrame {
 
+    private GestorProductos gestor;
+
     /**
      * Creates new form ListadoPorRubro
      */
-    public ListadoPorRubro() {
+    public ListadoPorRubro(GestorProductos gestor) {
         initComponents();
+        this.gestor = gestor;
+
+        javax.swing.table.DefaultTableModel modelo
+                = (javax.swing.table.DefaultTableModel) tabla_listadorubro.getModel();
+
+        modelo.setRowCount(0);
     }
 
     /**
@@ -35,6 +43,7 @@ public class ListadoPorRubro extends javax.swing.JInternalFrame {
         setTitle("Listado por Rubro");
 
         celdabox_rubro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas", "Comestible", "Limpieza", "Perfumería" }));
+        celdabox_rubro.addActionListener(this::celdabox_rubroActionPerformed);
 
         tittle_listadoderubro.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         tittle_listadoderubro.setText("Listado por Rubro");
@@ -99,6 +108,31 @@ public class ListadoPorRubro extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void celdabox_rubroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_celdabox_rubroActionPerformed
+        // TODO add your handling code here:
+        String rubroSeleccionado = celdabox_rubro.getSelectedItem().toString();
+
+        javax.swing.table.DefaultTableModel modelo
+                = (javax.swing.table.DefaultTableModel) tabla_listadorubro.getModel();
+
+        modelo.setRowCount(0);
+
+        for (Producto producto : gestor.getProductos()) {
+
+            if (rubroSeleccionado.equals("Todas")
+                    || producto.getRubro().equals(rubroSeleccionado)) {
+
+                modelo.addRow(new Object[]{
+                    producto.getCodigo(),
+                    producto.getDescripcion(),
+                    producto.getPrecio(),
+                    producto.getRubro(),
+                    producto.getStock()
+                });
+            }
+        }
+    }//GEN-LAST:event_celdabox_rubroActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

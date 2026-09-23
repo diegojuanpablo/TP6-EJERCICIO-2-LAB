@@ -10,11 +10,20 @@ package ulp.trabajopracticonro6;
  */
 public class ListadoPorNombre extends javax.swing.JInternalFrame {
 
+    private GestorProductos gestor;
+
     /**
      * Creates new form ListadoPorNombre
      */
-    public ListadoPorNombre() {
+    public ListadoPorNombre(GestorProductos gestor) {
         initComponents();
+
+        this.gestor = gestor;
+
+        javax.swing.table.DefaultTableModel modelo
+                = (javax.swing.table.DefaultTableModel) tabla_listadodenombre.getModel();
+
+        modelo.setRowCount(0);
     }
 
     /**
@@ -39,6 +48,12 @@ public class ListadoPorNombre extends javax.swing.JInternalFrame {
 
         text2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         text2.setText("Ingrese Descripción:");
+
+        field_ingresardescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                field_ingresardescripcionKeyReleased(evt);
+            }
+        });
 
         tabla_listadodenombre.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -96,6 +111,30 @@ public class ListadoPorNombre extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void field_ingresardescripcionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_field_ingresardescripcionKeyReleased
+        // TODO add your handling code here:
+        String descripcion = field_ingresardescripcion.getText().toLowerCase();
+
+        javax.swing.table.DefaultTableModel modelo
+                = (javax.swing.table.DefaultTableModel) tabla_listadodenombre.getModel();
+
+        modelo.setRowCount(0);
+
+        for (Producto producto : gestor.getProductos()) {
+
+            if (producto.getDescripcion().toLowerCase().contains(descripcion)) {
+
+                modelo.addRow(new Object[]{
+                    producto.getCodigo(),
+                    producto.getDescripcion(),
+                    producto.getPrecio(),
+                    producto.getRubro(),
+                    producto.getStock()
+                });
+            }
+        }
+    }//GEN-LAST:event_field_ingresardescripcionKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
